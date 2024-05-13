@@ -1,0 +1,49 @@
+import os
+import csv
+
+# establishing lists
+ballotid_list = []
+county_list = []
+candidate_list = []
+
+# designating the file that I want to use and the path to it 
+csvpath = os.path.join("Resources","election_data.csv")
+# "/Users/Finn/Desktop/NU-VIRT-DATA-PT-04-2024-U-LOLC/02-Homework/03-Python/Starter_Code/PyPoll/Resources/election_data.csv"
+# os.path.join("Resources","election_data.csv")
+with open(csvpath) as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    # skipping the header row
+    csv_header = next(csvreader)
+    # establishing a loop that goes through each row of the file
+    for row in csvreader:
+        ballotid_list.append(row[0])
+# counting the number of items in the ballotid_list
+len(ballotid_list)
+print("Election Results")
+print("Total Votes:", len(ballotid_list))
+
+with open(csvpath) as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    # skipping the header row
+    csv_header = next(csvreader)
+    # establishing a loop that goes through each row of the file
+    for row in csvreader:
+        candidate_list.append(row[2])
+# Count the votes for each candidate
+vote_counts = {}
+for candidate in candidate_list:
+    vote_counts[candidate] = vote_counts.get(candidate, 0) + 1
+
+# Calculate total number of votes
+total_votes = len(candidate_list)
+
+# Print the results
+for candidate, votes in vote_counts.items():
+    percentage = (votes / total_votes) * 100
+    print("{}: {:.2f}% ({})".format(candidate, percentage, votes))
+
+# Find the winner
+winner = max(vote_counts, key=vote_counts.get)
+
+# Print the winner
+print("Winner:", winner)
